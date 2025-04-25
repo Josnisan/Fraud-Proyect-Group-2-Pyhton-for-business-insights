@@ -31,13 +31,13 @@ Nuestro enfoque busca minimizar los falsos negativos, es decir, los fraudes que 
 Comenzamos nuestro proyecto realizando un análisis exploratorio del conjunto de datos, el cual contiene 15,420 registros y 33 columna que describen distintos aspectos de cada reclamo.
 Confirmamos que no existen valores nulos, lo cual facilita el procesamiento inicial. Las variables fueron categorizadas en distintos grupos para entender mejor su estructura y posibles relaciones con el fraude:
 
-#1 variable target (FraudFound_P)
-#9 temporales
-#4 demográficas 
-#2 geográficas 
-#5 vehiculares 
-#6 relacionadas a seguros/servicios
-#6 de circunstancias del accidente e historial
+1 variable target (FraudFound_P)
+9 temporales
+4 demográficas 
+2 geográficas 
+5 vehiculares 
+6 relacionadas a seguros/servicios
+6 de circunstancias del accidente e historial
 
 ![image](https://github.com/user-attachments/assets/37d4929f-3acd-4040-ac3b-b48bd24e09f3)
 
@@ -50,18 +50,80 @@ Por esta razón, será necesario aplicar técnicas de balanceo de clases, para a
 ![image](https://github.com/user-attachments/assets/bdb6f727-99a1-4179-89ce-df85eb82a8a0)
 
 Al comparar variables del dataset con FraudFound_P, identificamos patrones interesantes:
-#Mes del reclamo (Month) vs Fraude:
+Mes del reclamo (Month) vs Fraude:
  Enero destaca como el mes con mayor cantidad de reclamos fraudulentos, lo que sugiere una posible estacionalidad en el comportamiento del fraude.
-#Marca del vehículo (Make) vs Fraude:
+Marca del vehículo (Make) vs Fraude:
  La marca Pontiac aparece con mayor frecuencia entre los casos de fraude. Esto podría indicar una correlación fuerte que afecte la predicción, por lo que se debe analizar si este peso es real o producto de un sesgo en los datos.
 
-![image](https://github.com/user-attachments/assets/a75ae44b-fe0a-4b6a-83b7-7bc44eda4be6)
+![image](https://github.com/user-attachments/assets/8012fcf2-ca4b-4401-ad06-e74cfa8636c2)
+
 
 Continuamos analizando variables que pueden influir en la ocurrencia de fraudes:
 Área del accidente (AccidentArea):
- #La mayoría de los accidentes registrados en el dataset ocurrieron en zonas urbanas, lo que sugiere un sesgo hacia regiones más pobladas. Esto puede reflejar tanto la densidad vehicular como la frecuencia de reclamos.
+ La mayoría de los accidentes registrados en el dataset ocurrieron en zonas urbanas, lo que sugiere un sesgo hacia regiones más pobladas. Esto puede reflejar tanto la densidad vehicular como la frecuencia de reclamos.
 Sexo del conductor (Sex):
- #Observamos que la mayoría de los accidentes están relacionados con conductores hombres. Este tipo de patrón puede ser relevante al evaluar el riesgo, pero también debe manejarse con cuidado para evitar conclusiones sesgadas o discriminatorias en el modelo.
+ Observamos que la mayoría de los accidentes están relacionados con conductores hombres. Este tipo de patrón puede ser relevante al evaluar el riesgo, pero también debe manejarse con cuidado para evitar conclusiones sesgadas o discriminatorias en el modelo.
+
+![image](https://github.com/user-attachments/assets/adde51b7-ec75-443d-8784-65012cc3a0e7)
+
+En general, no se detecta multicolinealidad severa en el conjunto de datos: la mayoría de las correlaciones son bajas o cercanas a cero.
+Correlaciones destacadas:
+Existe una fuerte correlación positiva (0.94) entre PolicyNumber y Year, lo cual sugiere que podrían estar representando información redundante o relacionada temporalmente.
+
+Una moderada correlación (0.28) entre WeekOfMonth y WeekOfMonthClaimed, lógica por la cercanía temporal entre la fecha de ocurrencia y la fecha de reclamo.
+ Conclusión:
+Variables como PolicyNumber y Year requieren un análisis más profundo para decidir si deben ser transformadas, combinadas o eliminadas, dependiendo de su valor predictivo y el riesgo de sobreajuste.
+
+El resto de las variables numéricas no presenta problemas serios de correlación que puedan afectar negativamente el modelado.
+
+![image](https://github.com/user-attachments/assets/76f9db69-3e29-48ef-b922-205f0963ffb5)
+
+# 2. Limpieza de datos
+Durante el proceso de limpieza de datos, se abordaron varios problemas para mejorar el rendimiento del modelo:
+Se eliminaron los registros con valores faltantes en "Age" y se redujo la multicolinealidad para evitar su impacto negativo.
+Las variables "PolicyNumber" y "RepNumber", al ser identificadoras, no aportan a la predicción, por lo que se eliminaron.
+También se descartaron "Month" y "Year", ya que no son relevantes para la detección de fraude.
+
+![image](https://github.com/user-attachments/assets/ea7ed4fb-caf5-48fc-86cd-664773e111be)
+
+
+# 3. Separación del data set 
+
+Para poder empezar a tomar desiciones con respecto a la modelación de los datos primero se debe partir el data set, esto con la finalidad de tomar 3 conjuntos de datos: el data set de entrenamiento, con el cual se harán las pruebas iniciales, el data set de validación, que permitirá evaluar las métricas del modelo, y finalmente el data set de test, con el cual se realizará la prueba final para identificar si el modelo es efectivo para la detección de fraudes. 
+
+![image](https://github.com/user-attachments/assets/4aa899bc-3c2c-4eda-82cc-4f380550c9b2)
+
+# 4. Creación de nuevas columnas
+**notas feature engineering feature 1
+![image](https://github.com/user-attachments/assets/2b569830-309a-4284-a9d9-e9c698a40c7d)
+
+**notas feature engineering feature 2
+![image](https://github.com/user-attachments/assets/95ea31ed-5511-4577-a20a-92aad272a3a1)
+
+![image](https://github.com/user-attachments/assets/e7aca9f1-eee4-4ee3-95e3-6b4585b0b3d3)
+
+
+# 5. Balanceo de la target
+Para mejorar la detección de fraudes, se aplicó SMOTE al conjunto de entrenamiento, elevando los casos de fraude a aproximadamente el 30%. Esto ayudó a que el modelo reconociera mejor la clase minoritaria sin alterar demasiado la distribución original.
+![image](https://github.com/user-attachments/assets/993fe080-48be-4021-869c-23fab33c8eb5)
+
+
+# 6. Entrenamiento del modelo
+
+En esta fase, se entrenó un modelo de ensamblado mediante votación que integra múltiples algoritmos de clasificación. Este enfoque permite al modelo aprender a partir del conjunto de entrenamiento, utilizando las variables seleccionadas como predictores y los registros de fraude como variable objetivo. La combinación de diferentes clasificadores mejora el desempeño general, ya que aprovecha las fortalezas individuales de cada modelo. Este esquema de ensamblado se utilizó con el propósito de identificar el modelo con el mejor rendimiento.
+
+![image](https://github.com/user-attachments/assets/6bf19557-5c09-4a08-bd74-a707e6411ab1)
+
+El modelo XGBClassifier mostró el mejor rendimiento, especialmente al identificar casos de fraude, con una alta precisión del 99%. Aunque aún no detecta todos los fraudes (recall menor al 50%), logró una mejora notable frente a los otros modelos. En general, es un modelo equilibrado y efectivo, por lo que se considera una buena opción para detectar fraudes.
+
+![image](https://github.com/user-attachments/assets/6d4b8daa-f429-49c3-a095-3cb73527be74)
+
+
+# 7.Tuneo de hiperparámetros
+
+
+
+
 
 
 
