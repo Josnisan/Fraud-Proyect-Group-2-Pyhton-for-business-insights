@@ -91,7 +91,7 @@ También se descartaron "Month" y "Year", ya que no son relevantes para la detec
 
 Para poder empezar a tomar desiciones con respecto a la modelación de los datos primero se debe partir el data set, esto con la finalidad de tomar 3 conjuntos de datos: el data set de entrenamiento, con el cual se harán las pruebas iniciales, el data set de validación, que permitirá evaluar las métricas del modelo, y finalmente el data set de test, con el cual se realizará la prueba final para identificar si el modelo es efectivo para la detección de fraudes. 
 
-![image](https://github.com/user-attachments/assets/4aa899bc-3c2c-4eda-82cc-4f380550c9b2)
+![image](https://github.com/user-attachments/assets/8950c5f9-243a-469c-a25e-72263f0a3141)
 
 # 4. Creación de nuevas columnas
 **notas feature engineering feature 1
