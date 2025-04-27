@@ -102,6 +102,10 @@ Para poder empezar a tomar desiciones con respecto a la modelación de los datos
 
 ![image](https://github.com/user-attachments/assets/e7aca9f1-eee4-4ee3-95e3-6b4585b0b3d3)
 
+# 4. Encoding
+Se detectó el tipo de datos, columnas ordinales, no ordinales y binarias para escoger el mejor método de encoding.
+![image](https://github.com/user-attachments/assets/c3d51193-d514-4b1d-906c-aa5581b62c9e)
+
 
 # 5. Balanceo de la target
 Para mejorar la detección de fraudes, se aplicó SMOTE al conjunto de entrenamiento, elevando los casos de fraude a aproximadamente el 30%. Esto ayudó a que el modelo reconociera mejor la clase minoritaria sin alterar demasiado la distribución original.
@@ -121,9 +125,66 @@ El modelo XGBClassifier mostró el mejor rendimiento, especialmente al identific
 
 # 7.Tuneo de hiperparámetros
 
+Se utilizó XGBoost y se hizo uso de Gridsearch para utilizar los mejores parámetros posibles al modelo.
+
+![image](https://github.com/user-attachments/assets/6ba53618-22f0-4796-949f-eda7f86a5337)
+
+# Explicabilidad
+*notas graficas de shapes explicabilidad*
+![image](https://github.com/user-attachments/assets/d08af5ed-c06d-404a-8445-24b88f60e64a)
+
+![image](https://github.com/user-attachments/assets/15913db5-8451-4736-9dea-2a0c808411a2)
 
 
+# Desiciones de mejora 
+Para mejorar el modelo, se crearon dos nuevas variables: ClienteMuyRiesgoso y PerfilRiesgoso, ambas binarias. Estas se activan únicamente si se cumplen tres condiciones específicas relacionadas con la responsabilidad del cliente, el tipo de póliza ("Liability") y la cantidad de reclamos pasados (exactamente tres). Además, se realizaron dos ajustes técnicos adicionales: se modificó el umbral de predicción a 0,5 y se trabajó en el ajuste de hiperparámetros para optimizar el desempeño del modelo.
+![image](https://github.com/user-attachments/assets/8e7e842f-7e0e-4213-b919-161f60190788)
 
 
+# Resultados
+*notas rendimiento del modelo*
+![image](https://github.com/user-attachments/assets/878b669a-8c28-4872-a111-ce8d96a22171)
+![image](https://github.com/user-attachments/assets/6d8aed76-0217-4d83-b1c9-d7d2f233135c)
+![image](https://github.com/user-attachments/assets/111e873e-4172-4d40-ba90-34b0cb312494)
+
+*notas de matriz de confusion*
+![image](https://github.com/user-attachments/assets/e46cc328-84c1-46f2-b47a-763ce045b1b4)
+*notas de matriz de confusion sobre costos KPI*
+![image](https://github.com/user-attachments/assets/d8431ad0-6ecb-42af-a03f-e3a3f8cfa636)
+![image](https://github.com/user-attachments/assets/61d1f642-8f6d-4c5e-9730-40454ba598d8)
+
+# Implementación 
+*notas implementacion*
+![image](https://github.com/user-attachments/assets/2fbf58d5-ec28-4ba0-8ebe-92c65b8744b1)
+![image](https://github.com/user-attachments/assets/6346c9ab-c98d-4949-be6b-10949a50bd4e)
+
+# Beneficios 
+La implementación del modelo permite optimizar el uso de recursos humanos, enfocando a los investigadores en casos de mayor riesgo. Además, contribuye a reducir pérdidas interceptando más fraudes antes del pago y mejora los tiempos de respuesta al agilizar el trámite de reclamos legítimos mediante procesos automáticos. Esta estrategia está alineada con prácticas reales de aseguradoras como Allstate, Lemonade y Progressive, que integran inteligencia artificial en la detección de fraudes dentro de sus operaciones.
+
+![image](https://github.com/user-attachments/assets/63324da4-db37-4323-94eb-6e4a4b884bc0)
+
+# Limitaciones
+Entre las principales limitaciones técnicas se identificó el desbalance de clases, ya que los casos de fraude representaban apenas un 6%, dificultando alcanzar alta precisión y recall al mismo tiempo. Para priorizar el recall, se sacrificó la precisión, lo que generó una alta cantidad de falsos positivos y aumentó la carga de trabajo manual. Además, no se exploraron algoritmos más avanzados que podrían haber mejorado el desempeño del modelo. A nivel de implementación, el principal desafío es el costo operativo asociado al volumen de investigaciones manuales, resaltando la necesidad de optimizar mejor el equilibrio entre recall y precisión.
+
+![image](https://github.com/user-attachments/assets/20f05d20-453e-43e7-a6e3-7965a544813a)
+
+
+# Conclusiones
+Se alcanzó el objetivo principal al lograr un recall del 60,4% en la detección de fraudes, enfocándose en minimizar los casos no identificados. El modelo genera un valor tangible para el negocio, ya que la disminución de pérdidas supera los costos asociados a la investigación de falsos positivos. Aunque existen oportunidades de mejora, el modelo es suficientemente sólido para ser implementado como apoyo en el proceso de detección de fraudes en aseguradoras.
+
+![image](https://github.com/user-attachments/assets/ae68edbe-908c-4c05-981d-c2101f0bccf0)
+
+# Recomendaciones
+Se recomienda probar modelos más sofisticados, como LightGBM, para mejorar el desempeño del sistema. También se sugiere optimizar el umbral de decisión con el fin de balancear precisión y recall según los objetivos del negocio. Adicionalmente, es importante definir y agregar nuevas variables relevantes, complementando la data actual con información como historial financiero o tipo de siniestro. Finalmente, se plantea evaluar los costos operativos reales para dimensionar adecuadamente el equipo de investigación de fraudes.
+
+![image](https://github.com/user-attachments/assets/594330c8-b941-48ab-80c3-f8ceb0012c72)
+
+# Future Work
+Se propone explorar modelos de machine learning más avanzados, incluyendo algoritmos como XGBoost, LightGBM y CatBoost, con el objetivo de mejorar tanto el recall como la precisión del modelo. Además, se plantea realizar un ajuste fino del umbral de decisión para optimizar el equilibrio entre recall y precisión, alineándolo con el nivel de riesgo de fraude que la empresa esté dispuesta a asumir. Finalmente, se sugiere incrementar la cantidad de datos disponibles para fortalecer el entrenamiento y la capacidad predictiva del modelo.
+
+![image](https://github.com/user-attachments/assets/2a1def57-3bd8-4105-8ab5-5561f66f70c6)
+
+Gracias!
+![image](https://github.com/user-attachments/assets/05d8cea3-eb59-4695-b091-ccc913c1eead)
 
 
